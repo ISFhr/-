@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>圣杯布局</title>
+    <style>
+    </style>
+</head>
+<body>
+
+BFC(block formatting context）：简单来说，BFC 就是一种属性，这种属性会影响着元素的定位以及与其兄弟元素之间的相互作用。 
+        中文常译为块级格式化上下文。 
+    二、 形成 BFC 的条件 
+    
+    1、浮动元素，float 除 none 以外的值； 
+    2、绝对定位元素，position（absolute，fixed）； 
+    3、display 为以下其中之一的值 inline-blocks，table-cells，table-captions； 
+    4、overflow 除了 visible 以外的值（hidden，auto，scroll）
+    
+    三、bfc使用
+    1、清除浮动
+    2、解决浮动元素覆盖普通流元素问题 overflow：hidden
+    3、margin塌陷问题  overflow：hidden
+
+
+清除浮动
+    1）添加额外标签
+    这是在学校老师就告诉我们的 一种方法，通过在浮动元素末尾添加一个空的标签例如 
+    <div style=”clear:both”></div>，其他标签br等亦可。
+    <div class="wrap" id="float1">
+    <h2>1）添加额外标签</h2>
+    <div class="main left">.main{float:left;}</div>
+    <div class="side left">.side{float:right;}</div>
+    <div style="clear:both;"></div>
+    </div>
+    <div class="footer">.footer</div>
+
+    2）使用 br标签和其自身的 html属性
+    这个方法有些小众，br 有 clear=“all | left | right | none” 属性
+    <div class="wrap" id="float2">
+    <h2>2）使用 br标签和其自身的 html属性</h2>
+    <div class="main left">.main{float:left;}</div>
+    <div class="side left">.side{float:right;}</div>
+    <br clear="all" />
+    </div>
+    <div class="footer">.footer</div>
+
+    3)父元素设置 overflow：hidden
+    通过设置父元素overflow值设置为hidden；在IE6中还需要触发 hasLayout ，例如 zoom：1；
+    <div class="wrap" id="float3" style="overflow:hidden; *zoom:1;">
+    <h2>3)父元素设置 overflow </h2>
+    <div class="main left">.main{float:left;}</div>
+    <div class="side left">.side{float:right;}</div>
+    </div>
+    <div class="footer">.footer</div>
+
+    4)父元素设置 overflow：auto 属性
+
+    5）父元素也设置浮动
+
+    6）父元素设置display:table
+    需要注意的是，display:table 本身并不会创建BFC，但是它会产生匿名框(anonymous boxes)，
+    而匿名框中的display:table-cell可以创建新的BFC
+
+    7）使用:after 伪元素
+    .clearfix:after {content:"."; display:block; height:0; visibility:hidden; clear:both; }
+    .clearfix { *zoom:1; }
+
+通过对比，我们不难发现，其实以上列举的方法，无非有两类
+其一，通过在浮动元素的末尾添加一个空元素，设置 clear：both属性，after伪元素其实也是通过 content 在元素的后面生成了内容
+     为一个点的块级元素；
+其二，通过设置父元素 overflow 或者display：table 属性来闭合浮动，我们来探讨一下这里面的原理。
+
+上面已经列举了7种闭合浮动的方法，通过第三节分析的原理，我们发现其实更多的：display：table-cell，display：inline-block
+等只要触发了BFC的属性值都可以闭合浮动。从各个方面比较，after伪元素闭合浮动无疑是相对比较好的解决方案了，下面详细说说该方法。
+    
+    .clearfix:after {content:"."; display:block; height:0; visibility:hidden; clear:both; }
+    .clearfix { *zoom:1; }
+    1) display:block 使生成的元素以块级元素显示,占满剩余空间;
+    2) height:0 避免生成内容破坏原有布局的高度。
+    3) visibility:hidden 使生成的内容不可见，并允许可能被生成内容盖住的内容可以进行点击和交互;
+    4）通过 content:"."生成内容作为最后一个元素，至于content里面是点还是其他都是可以的，例如oocss里面就有经典的 content:"XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",有些版本可能content 里面内容为空,一丝冰凉是不推荐这样做的,firefox直到7.0 content:”" 仍然会产生额外的空隙；
+    5）zoom：1 触发IE hasLayout。
+    通过分析发现，除了clear：both用来闭合浮动的，其他代码无非都是为了隐藏掉content生成的内容，这也就是其他版本的闭合浮动为什么会有font-size：0，line-height：0。
+
+精益求精方案一：
+    相对于空标签闭合浮动的方法代码似乎还是有些冗余，通过查询发现Unicode字符里有一个“零宽度空格”，也就是U+200B ，这个字符本身是不可见的，所以我们完全可以省略掉 visibility:hidden了
+    .clearfix:after {content:"200B"; display:block; height:0; clear:both; }
+    .clearfix { *zoom:1; }.
+
+精益求精方案二：
+    由Nicolas Gallagher 大湿提出来的,原文:A new micro clearfix hack，该方法也不存在firefox中空隙的问题。
+    /* For modern browsers */
+    .cf:before,.cf:after {
+    content:"";
+    display:table;
+    }
+    .cf:after { clear:both; }/* For IE 6/7 (trigger hasLayout) */
+    .cf { zoom:1; }
+
+
+
+
+
+    
+</body>
+</html>

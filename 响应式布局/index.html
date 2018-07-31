@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="common.css">
+    <link media="(orientation: landscape) and (min-width: 500px)" rel="stylesheet" href="desktop.css">
+    <link media="(max-width: 500px)" rel="stylesheet" href="mobile.css">
+    <style>
+    /* #checkbox {
+        display: none;
+    } */
+    #checkbox:checked ~ p {
+        display: block;
+    }
+    p {
+        display: none;
+    }
+    </style>
+</head>
+<body>
+    <label for="checkbox">菜单</label>
+    <input id="checkbox" type="checkbox">
+    <p>选项一</p>
+    <p>选项二</p>
+    <p>选项三</p>
+    <p>选项四</p>
+</body>
+</html>

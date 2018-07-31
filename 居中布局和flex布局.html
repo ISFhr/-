@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title></title>
+    <style>
+    </style>
+</head>
+<body>
+    居中布局
+
+定义flex父级元素
+
+水平居中 
+    对于行内元素(inline)：text-align: center;
+    对于块级元素(block)：设置宽度且 marigin-left 和 margin-right 是设成 auto
+    对于多个块级元素：对父元素设置 text-align: center;，对子元素设置 display: inline-block;；或者使用 flex 布局
+
+垂直居中 
+    对于行内元素(inline) 
+    单行：设置上下 pandding 相等；或者设置 line-height 和 height 相等
+    多行：设置上下 pandding 相等；或者设置 display: table-cell; 和 vertical-align: middle;；或者使用 flex 布局；或者使用伪元素
+    对于块级元素(block)：下面前两种方案，父元素需使用相对布局 
+    已知高度：子元素使用绝对布局 top: 50%;，再用负的 margin-top 把子元素往上拉一半的高度
+    未知高度：子元素使用绝对布局 position: absolute; top: 50%; transform: translateY(-50%);
+    使用 Flexbox：选择方向，justify-content: center;
+
+水平垂直居中 
+    定高定宽：先用绝对布局 top: 50%; left: 50%;，再用和宽高的一半相等的负 margin 把子元素回拉
+    高度和宽度未知：先用绝对布局 top: 50%; left: 50%;，再设置 transform: translate(-50%, -50%);
+    使用 Flexbox：justify-content: center; align-items: center;
+
+flex布局
+    display: other values | flex | inline-flex;	
+    
+    flex-direction: row | row-reverse | column | column-reverse
+        row(默认值)：在“ltr”排版方式下从左向右排列；在“rtl”排版方式下从右向左排列。
+        row-reverse：与row排列方向相反，在“ltr”排版方式下从右向左排列；在“rtl”排版方式下从左向右排列。
+        column：类似 于row，不过是从上到下排列
+        column-reverse：类似于row-reverse，不过是从下到上排列。
+
+
+    flex-wrap(适用于伸缩容器，也就是伸缩项目的父元素)
+    这个主要用来定义伸缩容器里是单行还是多行显示，侧轴的方向决定了新行堆放的方向。
+    
+    flex-wrap: nowrap | wrap | wrap-reverse	
+        nowrap(默认值)：伸缩容器单行显示，“ltr”排版下，伸缩项目从左到右排列；“rtl”排版上伸缩项目从右向左排列。
+        wrap：伸缩容器多行显示，“ltr”排版下，伸缩项目从左到右排列；“rtl”排版上伸缩项目从右向左排列。
+        wrap-reverse：伸缩容器多行显示，“ltr”排版下，伸缩项目从右向左排列；“rtl”排版下，伸缩项目从左到右排列。（和wrap相反）
+    
+    这个是“flex-direction”和“flex-wrap”属性的缩写版本。同时定义了伸缩容器的主轴和侧轴。其默认值为“row nowrap”。
+
+        flex-flow: <‘flex-direction’> || <‘flex-wrap’>
+
+    justify-content: flex-start | flex-end | center | space-between | space-around	
+        flex-start(默认值)：伸缩项目向一行的起始位置靠齐。
+        flex-end：伸缩项目向一行的结束位置靠齐。
+        center：伸缩项目向一行的中间位置靠齐。
+        space-between：伸缩项目会平均地分布在行里。第一个伸缩项目一行中的最开始位置，最后一个伸缩项目在一行中最终点位置。
+        space-around：伸缩项目会平均地分布在行里，两端保留一半的空间。
+
+    align-items: flex-start | flex-end | center | baseline | stretch	
+        flex-start：伸缩项目在侧轴起点边的外边距紧靠住该行在侧轴起始的边。
+        flex-end：伸缩项目在侧轴终点边的外边距靠住该行在侧轴终点的边 。
+        center：伸缩项目的外边距盒在该行的侧轴上居中放置。
+        baseline：伸缩项目根据他们的基线对齐。
+        stretch（默认值）：伸缩项目拉伸填充整个伸缩容器。此值会使项目的外边距盒的尺寸在遵照「min/max-width/height」属性的限制下尽可能接近所在行的尺寸。
+
+    align-content(适用于伸缩容器，也就是伸缩项目的父元素)
+    这个属性主要用来调准伸缩行在伸缩容器里的对齐方式。类似于伸缩项目在主轴上使用“justify-content”一样。
+        
+        注：请注意本属性在只有一行的伸缩容器上没有效果。
+        
+        align-content: flex-start | flex-end | center | space-between | space-around | stretch	
+        flex-start：各行向伸缩容器的起点位置堆叠。
+        flex-end：各行向伸缩容器的结束位置堆叠。
+        center：各行向伸缩容器的中间位置堆叠。
+        space-between：各行在伸缩容器中平均分布。
+        space-around：各行在伸缩容器中平均分布，在两边各有一半的空间。
+        stretch（默认值）：各行将会伸展以占用剩余的空间。
+    
+定义flex内部子元素
+    order:定义渲染次序
+    flex-grow: 定义所占空间大小 数字形式，支持负值 默认为1
+    flex-shrink: 定义伸能力 数字形式，支持负值 默认为0
+    flex-basis: 这个用来设置伸缩基准值，剩余的空间按比率进行伸缩。负值不合法。默认为auto
+    
+    flex（适用于伸缩项目，也就是伸缩容器的子元素）
+    这是“flex-grow”、“flex-shrink”和“flex-basis”三个属性的缩写
+    
+    align-self（适用于伸缩项目，也就是伸缩容器的子元素）
+    用来在单独的伸缩项目上覆写默认的对齐方式。
+
+    属性值的介绍请参阅“align-items”的属性值。
+
+    align-self: auto | flex-start | flex-end | center | baseline | stretch
+
+</body>
+</html>
